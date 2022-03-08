@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>How to Run a Synthetic Forecast</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">How to Run a Synthetic Forecast</h1>
+
+
+
+<p>This is a walk through of how the package is intended to be used with a practical example.</p>
+<div id="the-dataset" class="section level4">
+<h4>The Dataset</h4>
+<p>The first thing that a forecast needs a data to be forecasted. The SynthCast provides a example of how it expected a dataset to look like, the code bellow loads the package and the example dataset:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(SynthCast)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&#39;df_example&#39;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(df_example)) </span></code></pre></div>
+<table style="width:100%;">
+<colgroup>
+<col width="1%" />
+<col width="4%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="1%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="1%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="1%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="1%" />
+<col width="3%" />
+<col width="3%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">unit</th>
+<th align="right">time_period</th>
+<th align="right">x1</th>
+<th align="right">x2</th>
+<th align="right">x3</th>
+<th align="right">x4</th>
+<th align="right">x5</th>
+<th align="right">x6</th>
+<th align="right">x7</th>
+<th align="right">x8</th>
+<th align="right">x9</th>
+<th align="right">x10</th>
+<th align="right">x11</th>
+<th align="right">x12</th>
+<th align="right">x13</th>
+<th align="right">x14</th>
+<th align="right">x15</th>
+<th align="right">x16</th>
+<th align="right">x17</th>
+<th align="right">x18</th>
+<th align="right">x19</th>
+<th align="right">x20</th>
+<th align="right">x21</th>
+<th align="right">x22</th>
+<th align="right">x23</th>
+<th align="right">x24</th>
+<th align="right">x25</th>
+<th align="right">x26</th>
+<th align="right">x27</th>
+<th align="right">x28</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0.4279268</td>
+<td align="right">0.2329316</td>
+<td align="right">0.4531898</td>
+<td align="right">0.5010649</td>
+<td align="right">0.0140657</td>
+<td align="right">0.5</td>
+<td align="right">0.0103704</td>
+<td align="right">0.0126492</td>
+<td align="right">0.0061209</td>
+<td align="right">0.0016722</td>
+<td align="right">0.0020701</td>
+<td align="right">0.0229175</td>
+<td align="right">0.1717596</td>
+<td align="right">0.0028440</td>
+<td align="right">0.2961483</td>
+<td align="right">0.2777202</td>
+<td align="right">0.0179579</td>
+<td align="right">0.5</td>
+<td align="right">0.0186335</td>
+<td align="right">0.0196256</td>
+<td align="right">0.0140659</td>
+<td align="right">0.5</td>
+<td align="right">0.0191083</td>
+<td align="right">0.0193874</td>
+<td align="right">0.0280014</td>
+<td align="right">0.5</td>
+<td align="right">0.0062926</td>
+<td align="right">0.0193874</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">0.3923215</td>
+<td align="right">0.0661752</td>
+<td align="right">0.4300946</td>
+<td align="right">0.4639223</td>
+<td align="right">0.1523873</td>
+<td align="right">0.5</td>
+<td align="right">0.0167901</td>
+<td align="right">0.1340623</td>
+<td align="right">0.0940312</td>
+<td align="right">0.0016722</td>
+<td align="right">0.0063536</td>
+<td align="right">0.0896040</td>
+<td align="right">0.1362349</td>
+<td align="right">0.0028440</td>
+<td align="right">0.2961483</td>
+<td align="right">0.2352990</td>
+<td align="right">0.1657939</td>
+<td align="right">0.5</td>
+<td align="right">0.1428571</td>
+<td align="right">0.1479287</td>
+<td align="right">0.1589145</td>
+<td align="right">0.5</td>
+<td align="right">0.1974522</td>
+<td align="right">0.1750037</td>
+<td align="right">0.1949374</td>
+<td align="right">0.5</td>
+<td align="right">0.0181592</td>
+<td align="right">0.1750037</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">0.4420440</td>
+<td align="right">0.1649872</td>
+<td align="right">0.4336537</td>
+<td align="right">0.5034269</td>
+<td align="right">0.2919640</td>
+<td align="right">0.5</td>
+<td align="right">0.0395062</td>
+<td align="right">0.2602215</td>
+<td align="right">0.1796289</td>
+<td align="right">0.0016722</td>
+<td align="right">0.0137895</td>
+<td align="right">0.1695727</td>
+<td align="right">0.1045988</td>
+<td align="right">0.0028440</td>
+<td align="right">0.2961483</td>
+<td align="right">0.2088865</td>
+<td align="right">0.3180237</td>
+<td align="right">0.5</td>
+<td align="right">0.3167702</td>
+<td align="right">0.2890312</td>
+<td align="right">0.3442300</td>
+<td align="right">0.5</td>
+<td align="right">0.3949045</td>
+<td align="right">0.3201550</td>
+<td align="right">0.2198580</td>
+<td align="right">0.5</td>
+<td align="right">0.0167533</td>
+<td align="right">0.3201550</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">0.4545717</td>
+<td align="right">0.1076923</td>
+<td align="right">0.4433019</td>
+<td align="right">0.5427364</td>
+<td align="right">0.4315704</td>
+<td align="right">0.5</td>
+<td align="right">0.0501235</td>
+<td align="right">0.3791298</td>
+<td align="right">0.2685505</td>
+<td align="right">0.0016722</td>
+<td align="right">0.0172917</td>
+<td align="right">0.2420208</td>
+<td align="right">0.0822586</td>
+<td align="right">0.0028440</td>
+<td align="right">0.2961483</td>
+<td align="right">0.1556901</td>
+<td align="right">0.4694968</td>
+<td align="right">0.5</td>
+<td align="right">0.4223602</td>
+<td align="right">0.4250857</td>
+<td align="right">0.5346481</td>
+<td align="right">0.5</td>
+<td align="right">0.5859873</td>
+<td align="right">0.4600435</td>
+<td align="right">0.2291281</td>
+<td align="right">0.5</td>
+<td align="right">0.0072638</td>
+<td align="right">0.4600435</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">0.4223203</td>
+<td align="right">0.1391912</td>
+<td align="right">0.4767905</td>
+<td align="right">0.5474351</td>
+<td align="right">0.5673960</td>
+<td align="right">0.5</td>
+<td align="right">0.0501235</td>
+<td align="right">0.4999604</td>
+<td align="right">0.3522328</td>
+<td align="right">0.1638796</td>
+<td align="right">0.0279551</td>
+<td align="right">0.3139178</td>
+<td align="right">0.0689121</td>
+<td align="right">0.2787148</td>
+<td align="right">0.0835851</td>
+<td align="right">0.1119981</td>
+<td align="right">0.6177005</td>
+<td align="right">0.5</td>
+<td align="right">0.6149068</td>
+<td align="right">0.5627327</td>
+<td align="right">0.7247700</td>
+<td align="right">0.5</td>
+<td align="right">0.7834395</td>
+<td align="right">0.5979929</td>
+<td align="right">0.2351954</td>
+<td align="right">0.5</td>
+<td align="right">0.0072638</td>
+<td align="right">0.5979929</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">6</td>
+<td align="right">0.3827364</td>
+<td align="right">0.1078405</td>
+<td align="right">0.5021293</td>
+<td align="right">0.5456524</td>
+<td align="right">0.6992290</td>
+<td align="right">0.5</td>
+<td align="right">0.0688889</td>
+<td align="right">0.6161397</td>
+<td align="right">0.4334900</td>
+<td align="right">0.3311037</td>
+<td align="right">0.0335161</td>
+<td align="right">0.3829171</td>
+<td align="right">0.0602702</td>
+<td align="right">0.2787148</td>
+<td align="right">0.0835851</td>
+<td align="right">0.0985164</td>
+<td align="right">0.7600335</td>
+<td align="right">0.5</td>
+<td align="right">0.7826087</td>
+<td align="right">0.6957559</td>
+<td align="right">0.9102858</td>
+<td align="right">0.5</td>
+<td align="right">0.9745223</td>
+<td align="right">0.7413431</td>
+<td align="right">0.2458748</td>
+<td align="right">0.5</td>
+<td align="right">0.0072638</td>
+<td align="right">0.7413431</td>
+</tr>
+</tbody>
+</table>
+<p>The dataset is expected to have 3 types of columns:</p>
+<ul>
+<li><ol style="list-style-type: decimal">
+<li><em>A unit column</em>: containing a numeric identification of the unit. In the credit card example this could the the customer, a group of customer, etc.,;</li>
+</ol></li>
+<li><ol start="2" style="list-style-type: decimal">
+<li><em>A time columns</em>: containing the time in integer. In the credit card example this would be the age in months of the respective unit (say 1 for first month, 2 for the second month, etc.,);</li>
+</ol></li>
+<li><ol start="3" style="list-style-type: decimal">
+<li><em>Feature Columns</em>: Numeric features, with both the serie(s) that will be forecasted as well as features to use to forecast. In the credit card this could be the profitability and transactional features.</li>
+</ol></li>
+</ul>
+<p>The table bellow shows the max time for each unit:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df_example <span class="sc">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(unit) <span class="sc">%&gt;%</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">max_time_period=</span><span class="fu">max</span>(time_period)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(unit <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">45</span>, <span class="dv">46</span>, <span class="dv">47</span>, <span class="dv">48</span>, <span class="dv">49</span>, <span class="dv">50</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">unit</th>
+<th align="right">max_time_period</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">50</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">49</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">48</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">47</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">46</td>
+</tr>
+<tr class="even">
+<td align="right">45</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="right">46</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="right">47</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="right">48</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">49</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">50</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p>As one can see the older unit (the smaller the number the older the unit is) the longer is the time series that are available (larger values in the <code>time_period</code> column). This means that the data from older units can be used to forecast the younger units. For example, the data from units <code>18</code> to <code>1</code> could be used to predict the next <code>12</code> periods of the unit <code>30</code>. This is excatly what the function <code>run_synthetic_forecast()</code> does (To better understand how it is working under the hood it is recommend to check the <a href="https://www.jstatsoft.org/article/view/v042i13">Synthetic Control Synth Package paper</a>.).</p>
+<p>The function call bellow runs a synthetic forecast of <code>12</code> time periods of the series <code>x1</code> of the unit 30.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>synthetic_forecast <span class="ot">&lt;-</span> <span class="fu">run_synthetic_forecast</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">df =</span> df_example,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_unit_name =</span> <span class="st">&#39;unit&#39;</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_time=</span><span class="st">&#39;time_period&#39;</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">periods_to_forecast=</span><span class="dv">12</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">unit_of_interest =</span> <span class="st">&#39;30&#39;</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">serie_of_interest =</span> <span class="st">&#39;x1&#39;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Forecasting Unit:  30 . Serie:  x1&quot;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; X1, X0, Z1, Z0 all come directly from dataprep object.</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; **************** </span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  searching for synthetic control unit  </span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  </span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; **************** </span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; **************** </span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; **************** </span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MSPE (LOSS V): 0.005105562 </span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; solution.v:</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.03795838 0.02953412 0.03356642 0.01533716 0.1226315 0.1285906 0.05816525 0.02318678 0.01465216 0.01080646 0.06187415 0.0289542 0.01702719 0.08006876 0.009607601 0.01627082 0.1278952 0.02615566 0.01342692 0.04431671 0.04468165 0.01097563 0.04431671 </span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; solution.w:</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1.1452e-05 0.0002666085 0.0001873182 0.0002686277 0.0001636778 0.0003347625 0.0004905744 0.0005939929 0.0005203545 0.5502766 4.8739e-06 0.0007708196 0.0003844661 0.001002508 0.000803214 0.000999687 0.1285913 0.3143298</span></span></code></pre></div>
+<p>The output of the function is a list with 4 tables.</p>
+</div>
+<div id="synthetic-forecat-results" class="section level3">
+<h3>Synthetic Forecat Results</h3>
+<p>These are the 4 tables that are returned by the function call.</p>
+<div id="table-1-synthetic_control_composition" class="section level4">
+<h4>Table 1: <code>synthetic_control_composition</code></h4>
+<p>This table summarizes the results related to the unit selection from the Synthetic Control method. The columns are the following:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(synthetic_forecast<span class="sc">$</span>synthetic_control_composition)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">execution_date</th>
+<th align="left">projected_unit</th>
+<th align="left">projected_serie</th>
+<th align="left">synthetic_units</th>
+<th align="right">w.weights</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="left">x1</td>
+<td align="left">10</td>
+<td align="right">0.550</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="left">x1</td>
+<td align="left">18</td>
+<td align="right">0.314</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="left">x1</td>
+<td align="left">17</td>
+<td align="right">0.129</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="left">x1</td>
+<td align="left">8</td>
+<td align="right">0.001</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="left">x1</td>
+<td align="left">9</td>
+<td align="right">0.001</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="left">x1</td>
+<td align="left">12</td>
+<td align="right">0.001</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="left">x1</td>
+<td align="left">14</td>
+<td align="right">0.001</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="left">x1</td>
+<td align="left">15</td>
+<td align="right">0.001</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="left">x1</td>
+<td align="left">16</td>
+<td align="right">0.001</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>execution_date</code>: The date that the forecast was executed in the YYYY-MM-DD format;</li>
+<li><code>projected_unit</code>: The forcasted unit;</li>
+<li><code>projected_serie</code>: The forecasted serie;</li>
+<li><code>synthetic_units</code>/<code>w.weights</code>: the units (from <code>18</code> to <code>1</code>) selected and their recpective weights.</li>
+</ul>
+</div>
+<div id="table-2-variable_importance_and_comparison" class="section level4">
+<h4>Table 2: <code>variable_importance_and_comparison</code></h4>
+<p>This table summarizes the results related to the features/variables selection from the Synthetic Control method. The columns are the following:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(synthetic_forecast<span class="sc">$</span>variable_importance_and_comparison,<span class="dv">8</span>))</span></code></pre></div>
+<table>
+<colgroup>
+<col width="15%" />
+<col width="15%" />
+<col width="16%" />
+<col width="9%" />
+<col width="17%" />
+<col width="10%" />
+<col width="7%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">execution_date</th>
+<th align="left">projected_unit</th>
+<th align="left">projected_serie</th>
+<th align="left">variable</th>
+<th align="right">unit_of_interest</th>
+<th align="right">synthetic</th>
+<th align="right">sample</th>
+<th align="right">v.weights</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="left">x1</td>
+<td align="left">x8</td>
+<td align="right">0.474</td>
+<td align="right">0.550</td>
+<td align="right">0.567</td>
+<td align="right">0.129</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="left">x1</td>
+<td align="left">x20</td>
+<td align="right">0.537</td>
+<td align="right">0.613</td>
+<td align="right">0.630</td>
+<td align="right">0.128</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="left">x1</td>
+<td align="left">x7</td>
+<td align="right">0.110</td>
+<td align="right">0.099</td>
+<td align="right">0.088</td>
+<td align="right">0.123</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="left">x1</td>
+<td align="left">x16</td>
+<td align="right">0.289</td>
+<td align="right">0.192</td>
+<td align="right">0.168</td>
+<td align="right">0.080</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="left">x1</td>
+<td align="left">x13</td>
+<td align="right">0.237</td>
+<td align="right">0.145</td>
+<td align="right">0.116</td>
+<td align="right">0.062</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="left">x1</td>
+<td align="left">x9</td>
+<td align="right">0.443</td>
+<td align="right">0.441</td>
+<td align="right">0.433</td>
+<td align="right">0.058</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="left">x1</td>
+<td align="left">x25</td>
+<td align="right">0.517</td>
+<td align="right">0.370</td>
+<td align="right">0.317</td>
+<td align="right">0.045</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="left">x1</td>
+<td align="left">x24</td>
+<td align="right">0.729</td>
+<td align="right">0.709</td>
+<td align="right">0.699</td>
+<td align="right">0.044</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>execution_date</code>: The date that the forecast was executed in the YYYY-MM-DD format;</li>
+<li><code>projected_unit</code>: The forcasted unit;</li>
+<li><code>projected_serie</code>: The forecasted serie;</li>
+<li><code>variable</code>: The variable selected;</li>
+<li><code>unit_of_interest</code>: The mean value over time of the variable in column <code>variable</code> from the unit in the <code>projected_unit</code>;</li>
+<li><code>synthetic</code>: The mean value over time of the variable in column <code>variable</code> of the syntehtic unit;</li>
+<li><code>sample</code>: The mean value over time of the variable in column <code>variable</code> of the whole dataset;</li>
+<li><code>v.weights</code>: The weight of the variable in the column <code>variable</code>.</li>
+</ul>
+</div>
+<div id="table-3-mape_backtest" class="section level4">
+<h4>Table 3: <code>mape_backtest</code></h4>
+<p>This table depicts the results of a simple mape back test on the period it was used to forecast. It is worth noting that the intention is not to provide a robust method for validation the model. The Synthetic Control Method is a mathematical approach, not an machine learning, that minimizes the distance without worrying about overfitting the curves. The columns are the following:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(synthetic_forecast<span class="sc">$</span>mape_backtest)</span></code></pre></div>
+<table style="width:100%;">
+<colgroup>
+<col width="10%" />
+<col width="10%" />
+<col width="11%" />
+<col width="17%" />
+<col width="13%" />
+<col width="15%" />
+<col width="14%" />
+<col width="6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">execution_date</th>
+<th align="left">projected_unit</th>
+<th align="left">projected_serie</th>
+<th align="right">max_time_unit_of_interest</th>
+<th align="right">periods_to_forecast</th>
+<th align="right">elegible_control_units</th>
+<th align="right">number_control_units</th>
+<th align="right">mape</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="left">x1</td>
+<td align="right">21</td>
+<td align="right">12</td>
+<td align="right">17</td>
+<td align="right">9</td>
+<td align="right">13.00928</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>execution_date</code>: The date that the forecast was executed in the YYYY-MM-DD format;</li>
+<li><code>projected_unit</code>: The forcasted unit;</li>
+<li><code>projected_serie</code>: The forecasted serie;</li>
+<li><code>max_time_unit_of_interest</code>: The age of the unit of interest;</li>
+<li><code>periods_to_forecast</code>: Periods that were forecasted;</li>
+<li><code>elegible_control_units</code>: Number of elegible units to be used to forecast;</li>
+<li><code>mape</code>: The mean absolute percentage error in the from 1 to <code>max_time_unit_of_interest</code>.</li>
+</ul>
+</div>
+<div id="table-4-output_projecao" class="section level4">
+<h4>Table 4: <code>output_projecao</code></h4>
+<p>This tables contains the projection itself. The columns are the following:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(synthetic_forecast<span class="sc">$</span>output_projecao)</span></code></pre></div>
+<table>
+<colgroup>
+<col width="16%" />
+<col width="16%" />
+<col width="12%" />
+<col width="23%" />
+<col width="13%" />
+<col width="17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">execution_date</th>
+<th align="left">projected_unit</th>
+<th align="right">time_period</th>
+<th align="right">projected_serie_value</th>
+<th align="right">is_projected</th>
+<th align="left">projected_serie</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">1</td>
+<td align="right">0.4354680</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">2</td>
+<td align="right">0.4321821</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">3</td>
+<td align="right">0.5256354</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">4</td>
+<td align="right">0.4840789</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">5</td>
+<td align="right">0.3801790</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">6</td>
+<td align="right">0.2640425</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">7</td>
+<td align="right">0.1495329</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">8</td>
+<td align="right">0.2581808</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">9</td>
+<td align="right">0.2937315</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">10</td>
+<td align="right">0.3000216</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">11</td>
+<td align="right">0.3381660</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">12</td>
+<td align="right">0.3035805</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">13</td>
+<td align="right">0.2989308</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">14</td>
+<td align="right">0.6051545</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">15</td>
+<td align="right">0.3462337</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">16</td>
+<td align="right">0.3895760</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">17</td>
+<td align="right">0.4199159</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">18</td>
+<td align="right">0.4777851</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">19</td>
+<td align="right">0.5354843</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">20</td>
+<td align="right">0.4860005</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">21</td>
+<td align="right">0.4963447</td>
+<td align="right">0</td>
+<td align="left">x1</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">22</td>
+<td align="right">0.4928737</td>
+<td align="right">1</td>
+<td align="left">x1</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">23</td>
+<td align="right">0.4534551</td>
+<td align="right">1</td>
+<td align="left">x1</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">24</td>
+<td align="right">0.4750725</td>
+<td align="right">1</td>
+<td align="left">x1</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">25</td>
+<td align="right">0.4928884</td>
+<td align="right">1</td>
+<td align="left">x1</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">26</td>
+<td align="right">0.7005200</td>
+<td align="right">1</td>
+<td align="left">x1</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">27</td>
+<td align="right">0.3911140</td>
+<td align="right">1</td>
+<td align="left">x1</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">28</td>
+<td align="right">0.4438282</td>
+<td align="right">1</td>
+<td align="left">x1</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">29</td>
+<td align="right">0.4673172</td>
+<td align="right">1</td>
+<td align="left">x1</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">30</td>
+<td align="right">0.4722184</td>
+<td align="right">1</td>
+<td align="left">x1</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">31</td>
+<td align="right">0.4898868</td>
+<td align="right">1</td>
+<td align="left">x1</td>
+</tr>
+<tr class="even">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">32</td>
+<td align="right">0.5014260</td>
+<td align="right">1</td>
+<td align="left">x1</td>
+</tr>
+<tr class="odd">
+<td align="left">2022-03-08</td>
+<td align="left">30</td>
+<td align="right">33</td>
+<td align="right">0.4313357</td>
+<td align="right">1</td>
+<td align="left">x1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>execution_date</code>: The date that the forecast was executed in the YYYY-MM-DD format;</li>
+<li><code>projected_unit</code>: The forcasted unit;</li>
+<li><code>time_period</code>: The time period;</li>
+<li><code>projected_serie</code>: The forecasted serie;</li>
+<li><code>projected_serie_value</code>: The value of the seria/variable that was projected, from colun <code>projected_serie</code>;</li>
+<li><code>is_projected</code>: 1 indicates that the value is projected, 0 indicates that the value is observed.</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>proj<span class="ot">&lt;-</span> synthetic_forecast<span class="sc">$</span>output_projecao</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>proj <span class="sc">%&gt;%</span> <span class="fu">glimpse</span>()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 33</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 6</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ execution_date        &lt;chr&gt; &quot;2022-03-08&quot;, &quot;2022-03-08&quot;, &quot;2022-03-08&quot;, &quot;2022-…</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ projected_unit        &lt;chr&gt; &quot;30&quot;, &quot;30&quot;, &quot;30&quot;, &quot;30&quot;, &quot;30&quot;, &quot;30&quot;, &quot;30&quot;, &quot;30&quot;, …</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ time_period           &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1…</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ projected_serie_value &lt;dbl&gt; 0.4354680, 0.4321821, 0.5256354, 0.4840789, 0.38…</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ is_projected          &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ projected_serie       &lt;chr&gt; &quot;x1&quot;, &quot;x1&quot;, &quot;x1&quot;, &quot;x1&quot;, &quot;x1&quot;, &quot;x1&quot;, &quot;x1&quot;, &quot;x1&quot;, …</span></span></code></pre></div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
